@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-./scripts/check-quick.sh
+cd frontend
+npm run dev

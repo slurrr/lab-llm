@@ -1,14 +1,16 @@
 [project]
 name = "lab-llm"
 version = "0.1.0"
-description = ""
+description = "Browser-side observability dashboard for a local LLM lab."
 requires-python = ">=3.11"
 
 [tool.ruff]
 line-length = 100
+fix = true
+
+[tool.ruff.lint]
 select = ["E", "F", "W", "I"]
 ignore = ["E501"]
-fix = true
 
 [tool.ruff.format]
 quote-style = "double"
@@ -19,3 +21,7 @@ reportMissingImports = false
 pythonVersion = "3.11"
 venvPath = "."
 venv = ".venv"
+extraPaths = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
