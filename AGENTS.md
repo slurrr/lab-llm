@@ -18,6 +18,8 @@ Primary goals:
 ## Conventions
 - Treat the runner repo as the telemetry producer.
 - Consume telemetry through external interfaces; do not rely on runner internal imports as the primary path.
+- This repo owns the telemetry gap ledger and the operator question checklist.
+- Use dashboard-facing failures to define upstream telemetry work; do not silently normalize away telemetry truth gaps.
 - Prefer clear separation between:
   - decisions in `docs/decisions/`
   - implementation specs in `docs/specs/`

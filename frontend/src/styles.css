@@ -142,6 +142,18 @@ button {
   margin-bottom: 18px;
 }
 
+.source-strip,
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .metric-card,
 .subpanel,
 .chart-card {
@@ -164,6 +176,52 @@ button {
 .subpanel h3,
 .metric-card h3 {
   margin: 0;
+}
+
+.source-item {
+  background: rgba(198, 90, 33, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.source-path strong {
+  word-break: break-all;
+}
+
+.label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+}
+
+.summary-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.summary-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.summary-list div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.summary-list dt {
+  color: var(--muted);
+}
+
+.summary-list dd {
+  margin: 0;
+  text-align: right;
 }
 
 .chart-empty {
@@ -209,12 +267,20 @@ pre {
   font-size: 0.84rem;
 }
 
+details > summary {
+  cursor: pointer;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
 @media (max-width: 1100px) {
   .layout {
     grid-template-columns: 1fr;
   }
 
   .metric-grid,
+  .source-strip,
+  .summary-grid,
   .chart-grid,
   .detail-grid {
     grid-template-columns: 1fr;

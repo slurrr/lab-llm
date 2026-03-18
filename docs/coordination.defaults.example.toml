@@ -1,0 +1,8 @@
+model_runner_root = "/path/to/model-runner"
+telemetry_jsonl = "/path/to/model-runner/models/YourModel/backend/config/telemetry/session.jsonl"
+api_base = "http://127.0.0.1:8001"
+dashboard_url = "http://127.0.0.1:8001/"
+gap_slice_count = 5
+loop_iterations = 3
+codex_exec_mode = "danger-full-access"
+verification_policy = "auto"

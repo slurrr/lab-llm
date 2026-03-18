@@ -1,0 +1,8 @@
+# Optional focus steering for the gap slice generator.
+#
+# Copy to `docs/coordination/focus.txt` to activate.
+# Add one GAP id per line.
+#
+# Example:
+# GAP-001
+# GAP-015
