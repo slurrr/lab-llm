@@ -8,6 +8,7 @@ Purpose:
 - keep repo-facing notes about the downstream dashboard architecture
 - document the current expected boundary from `model-runner`
 - avoid turning this repo into the dashboard implementation home
+- reinforce that this repo owns the operator-facing gap ledger
 
 This file is intentionally downstream-facing and non-authoritative for the dashboard repo.
 It exists so this repo can remember what the downstream architecture expects today.
@@ -128,6 +129,14 @@ The downstream UI should be:
 - ready to share a shell with future browser chat
 - explicit about live vs completed state
 - explicit about unknown/unavailable metrics
+
+## Gap ownership
+This repo owns the product-facing telemetry gap list.
+
+That means:
+- `lab-llm` records which operator questions are not answerable
+- `lab-llm` records which telemetry gaps cause those failures
+- `model-runner` remains accountable for upstream telemetry truth improvements
 
 ## Open notes
 - If the dashboard repo needs long-retention storage, that should be solved there, not here.

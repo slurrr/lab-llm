@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 
 from lab_llm.fixtures import load_events_from_jsonl
-from lab_llm.live import EventBroadcaster, FixtureReplayer, JsonlTailer
+from lab_llm.live import EventBroadcaster, FixtureReplayer, IngestionMonitor, JsonlTailer
 from lab_llm.server import run_server
 from lab_llm.store import DashboardStore
 
@@ -43,17 +43,24 @@ def main() -> None:
     broadcaster = EventBroadcaster()
 
     if args.telemetry_jsonl:
-        tailer = JsonlTailer(args.telemetry_jsonl, store, broadcaster, read_existing=True)
+        monitor = IngestionMonitor(mode="jsonl", source=args.telemetry_jsonl)
+        tailer = JsonlTailer(
+            args.telemetry_jsonl, store, broadcaster, monitor=monitor, read_existing=True
+        )
         tailer.start()
     else:
+        monitor = IngestionMonitor(mode="fixture", source=args.fixtures)
         fixture_path = Path(args.fixtures)
         events = load_events_from_jsonl(fixture_path)
         if args.replay_fixtures:
-            FixtureReplayer(events, store, broadcaster, speed=args.replay_speed).start()
+            FixtureReplayer(
+                events, store, broadcaster, monitor=monitor, speed=args.replay_speed
+            ).start()
         else:
             for event in events:
                 store.ingest(event)
-    run_server(args.host, args.port, store, broadcaster)
+                monitor.record_event(event)
+    run_server(args.host, args.port, store, broadcaster, monitor)
 
 
 if __name__ == "__main__":

@@ -119,8 +119,11 @@ class DashboardStore:
         )
 
     def _handle_load_reported(self, session: dict[str, Any], event: TelemetryEvent) -> None:
-        session["load_report"] = deepcopy(event.payload)
-        session["inspect"]["load_truth"] = deepcopy(event.payload)
+        current = session["load_report"] or {}
+        merged = deepcopy(current)
+        merged.update(deepcopy(event.payload))
+        session["load_report"] = merged
+        session["inspect"]["load_truth"] = deepcopy(merged)
         extension = event.payload.get("extension")
         if isinstance(extension, dict):
             session["inspect"]["backend_extensions"]["load_report"] = deepcopy(extension)

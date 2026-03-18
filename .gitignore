@@ -9,3 +9,10 @@ __pycache__/
 .ruff_cache/
 frontend/node_modules/
 frontend/dist/
+frontend/artifacts/
+docs/coordination.defaults.toml
+docs/coordination/current_gap_slice.md
+docs/coordination/focus.txt
+docs/coordination/inbox/
+docs/coordination/state.json
+docs/coordination/verification_target.md

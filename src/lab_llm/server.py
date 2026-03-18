@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-from lab_llm.live import EventBroadcaster, format_sse_event
+from lab_llm.live import EventBroadcaster, IngestionMonitor, format_sse_event
 from lab_llm.store import DashboardStore
 
 PACKAGE_STATIC_DIR = Path(__file__).with_name("static")
@@ -21,10 +21,12 @@ class DashboardHTTPServer(ThreadingHTTPServer):
         server_address: tuple[str, int],
         store: DashboardStore,
         broadcaster: EventBroadcaster | None = None,
+        monitor: IngestionMonitor | None = None,
     ) -> None:
         super().__init__(server_address, DashboardRequestHandler)
         self.store = store
         self.broadcaster = broadcaster or EventBroadcaster()
+        self.monitor = monitor
 
 
 class DashboardRequestHandler(BaseHTTPRequestHandler):
@@ -39,6 +41,9 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
             return
         if path == "/api/events":
             self._handle_sse()
+            return
+        if path == "/api/status":
+            self._send_json({"ingestion": self.server.monitor.snapshot() if self.server.monitor else None})
             return
         if path == "/app.js":
             self._serve_static("app.js", "application/javascript; charset=utf-8")
@@ -119,9 +124,13 @@ class DashboardRequestHandler(BaseHTTPRequestHandler):
 
 
 def run_server(
-    host: str, port: int, store: DashboardStore, broadcaster: EventBroadcaster | None = None
+    host: str,
+    port: int,
+    store: DashboardStore,
+    broadcaster: EventBroadcaster | None = None,
+    monitor: IngestionMonitor | None = None,
 ) -> None:
-    server = DashboardHTTPServer((host, port), store, broadcaster)
+    server = DashboardHTTPServer((host, port), store, broadcaster, monitor)
     print(f"lab-llm dashboard listening on http://{host}:{port}")
     try:
         server.serve_forever()
